@@ -12,7 +12,9 @@ An AI-powered chess openings application built with Laravel and Hexagonal Archit
 - **Redis** - Caching and queue backend
 
 ### Frontend
-- **Blade** - Laravel templating engine
+- **React** - Modern JavaScript library for building user interfaces
+- **Inertia.js** - Modern monolith approach connecting Laravel and React
+- **shadcn/ui** - Re-usable component library built with Radix UI and Tailwind
 - **Vite** - Frontend build tool
 - **Tailwind CSS 4** - Utility-first CSS framework
 
