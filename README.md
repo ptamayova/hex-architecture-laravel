@@ -42,6 +42,25 @@ composer create-project nunomaduro/laravel-starter-kit --prefer-dist example-app
 
 ### Initial Setup
 
+#### Option 1: Docker (Recommended)
+
+The easiest way to get started with a complete development environment:
+
+```bash
+cd example-app
+
+# Complete setup with Docker
+make setup
+```
+
+This sets up FrankenPHP + Laravel Octane, PostgreSQL, Redis, and a worker service with hot reload for both frontend and backend.
+
+**Access your app at: http://localhost**
+
+See [DOCKER.md](DOCKER.md) for complete Docker documentation.
+
+#### Option 2: Local Development
+
 Navigate to your project and complete the setup:
 
 ```bash
@@ -74,6 +93,17 @@ composer test
 You should see 100% test coverage and all quality checks passing.
 
 ## Available Tooling
+
+### Docker Commands
+- `make setup` - Complete development setup (first time)
+- `make start` - Start all containers
+- `make stop` - Stop all containers
+- `make logs` - View logs
+- `make shell` - Access container shell
+- `make test` - Run tests
+- `make help` - See all 60+ available commands
+
+See [DOCKER.md](DOCKER.md) for complete Docker documentation.
 
 ### Development
 - `composer dev` - Starts Laravel server, queue worker, log monitoring, and Vite dev server concurrently

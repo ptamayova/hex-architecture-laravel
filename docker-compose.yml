@@ -1,0 +1,143 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    container_name: ai-chess-app
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      # Mount source code for hot reload
+      - .:/app
+      # Persist vendor and node_modules (faster, avoids conflicts)
+      - vendor:/app/vendor
+      - node_modules:/app/node_modules
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=ai_chess
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - QUEUE_CONNECTION=redis
+      - CACHE_STORE=redis
+      - SESSION_DRIVER=redis
+      - OCTANE_SERVER=frankenphp
+      - COMPOSER_MEMORY_LIMIT=-1
+      # XDebug configuration
+      - XDEBUG_MODE=debug
+      - XDEBUG_CONFIG=client_host=host.docker.internal client_port=9003 start_with_request=yes
+      - PHP_IDE_CONFIG=serverName=ai-chess
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ai-chess
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    container_name: ai-chess-worker
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - .:/app
+      - vendor:/app/vendor
+      - node_modules:/app/node_modules
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=ai_chess
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - QUEUE_CONNECTION=redis
+      - CACHE_STORE=redis
+      - SESSION_DRIVER=redis
+      - COMPOSER_MEMORY_LIMIT=-1
+    command: php artisan queue:work --tries=3 --timeout=90 --sleep=3 --max-jobs=1000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ai-chess
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: ai-chess-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=ai_chess
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ai-chess
+
+  redis:
+    image: redis:7-alpine
+    container_name: ai-chess-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ai-chess
+
+  vite:
+    image: node:20-alpine
+    container_name: ai-chess-vite
+    working_dir: /app
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    ports:
+      - "5173:5173"
+    command: npm run dev -- --host 0.0.0.0
+    networks:
+      - ai-chess
+
+networks:
+  ai-chess:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  vendor:
+  node_modules:
