@@ -249,6 +249,57 @@ final class EloquentOrderRepository implements OrderRepository {
 
 ---
 
+## Frontend Development Rules
+
+### Mandatory Rules
+
+✅ **ALWAYS**:
+- Use shadcn/ui components (Button, Input, Select, Table, etc.)
+- Create custom reusable components only if shadcn doesn't provide it
+- Keep business logic and API calls in page/container components only
+- Use TypeScript for type safety
+
+❌ **NEVER**:
+- Write inline markup for buttons, inputs, forms, or any UI element
+- Put API calls or business logic inside presentational components
+- Create custom components without checking shadcn first
+
+### Code Patterns
+
+```tsx
+// ✅ CORRECT: Using shadcn, business logic in container
+import { Button } from "@/components/ui/button"
+
+function OrderListPage() {
+    const [orders, setOrders] = useState<OrderDto[]>([]);
+
+    useEffect(() => {
+        api.get('/api/orders').then(setOrders); // API call in container
+    }, []);
+
+    const handleCancel = async (orderId: string) => {
+        await api.post(`/api/orders/${orderId}/cancel`); // Business logic here
+    };
+
+    return <OrderTable orders={orders} onCancel={handleCancel} />;
+}
+
+// ❌ WRONG: Inline markup + business logic in presentational component
+function OrderTable({ orders }: Props) {
+    return (
+        <div>
+            <button className="bg-blue-600 px-4 py-2">Cancel</button> {/* NO! */}
+            {orders.map(order => {
+                const canCancel = order.total < 1000; // NO! Business rule
+                return <div key={order.id}>...</div>;
+            })}
+        </div>
+    );
+}
+```
+
+---
+
 ## Query vs Command Pattern (CQRS)
 
 Use separate interfaces for reads and writes.
