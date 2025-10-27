@@ -1,6 +1,8 @@
-# AI Chess Openings
+# Hex Architecture Laravel
 
-An AI-powered chess openings application built with Laravel and Hexagonal Architecture.
+A base Laravel project with ultra-strict, type-safe hexagonal architecture skeleton. 
+It features Login and Register features that can be used to understand this architecture better and as a base for future features. 
+It also includes an AGENTS.md file to guide LLMs and agents when developing using tools like Claude Code or Cursor.
 
 ## Technologies
 

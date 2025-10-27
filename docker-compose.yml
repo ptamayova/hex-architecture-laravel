@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: dev
-    container_name: ai-chess-app
+    container_name: hex-architecture-laravel-app
     restart: unless-stopped
     working_dir: /app
     volumes:
@@ -22,7 +22,7 @@ services:
       - DB_CONNECTION=pgsql
       - DB_HOST=postgres
       - DB_PORT=5432
-      - DB_DATABASE=ai_chess
+      - DB_DATABASE=hex_architecture_laravel
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - REDIS_HOST=redis
@@ -35,14 +35,14 @@ services:
       # XDebug configuration
       - XDEBUG_MODE=debug
       - XDEBUG_CONFIG=client_host=host.docker.internal client_port=9003 start_with_request=yes
-      - PHP_IDE_CONFIG=serverName=ai-chess
+      - PHP_IDE_CONFIG=serverName=hex-architecture-laravel
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
     networks:
-      - ai-chess
+      - hex-architecture-laravel
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -51,7 +51,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: dev
-    container_name: ai-chess-worker
+    container_name: hex-architecture-laravel-worker
     restart: unless-stopped
     working_dir: /app
     volumes:
@@ -64,7 +64,7 @@ services:
       - DB_CONNECTION=pgsql
       - DB_HOST=postgres
       - DB_PORT=5432
-      - DB_DATABASE=ai_chess
+      - DB_DATABASE=hex_architecture_laravel
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - REDIS_HOST=redis
@@ -80,14 +80,14 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - ai-chess
+      - hex-architecture-laravel
 
   postgres:
     image: postgres:17-alpine
-    container_name: ai-chess-postgres
+    container_name: hex-architecture-laravel-postgres
     restart: unless-stopped
     environment:
-      - POSTGRES_DB=ai_chess
+      - POSTGRES_DB=hex_architecture_laravel
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
@@ -100,11 +100,11 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - ai-chess
+      - hex-architecture-laravel
 
   redis:
     image: redis:7-alpine
-    container_name: ai-chess-redis
+    container_name: hex-architecture-laravel-redis
     restart: unless-stopped
     command: redis-server --appendonly yes
     volumes:
@@ -117,11 +117,11 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - ai-chess
+      - hex-architecture-laravel
 
   vite:
     image: node:20-alpine
-    container_name: ai-chess-vite
+    container_name: hex-architecture-laravel-vite
     working_dir: /app
     volumes:
       - .:/app
@@ -130,10 +130,10 @@ services:
       - "5173:5173"
     command: npm run dev -- --host 0.0.0.0
     networks:
-      - ai-chess
+      - hex-architecture-laravel
 
 networks:
-  ai-chess:
+  hex-architecture-laravel:
     driver: bridge
 
 volumes:

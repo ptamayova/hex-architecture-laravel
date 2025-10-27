@@ -134,7 +134,7 @@ The Docker setup uses these environment variables (configured in `docker-compose
 DB_CONNECTION=pgsql
 DB_HOST=postgres
 DB_PORT=5432
-DB_DATABASE=ai_chess
+DB_DATABASE=hex_architecture_laravel
 DB_USERNAME=postgres
 DB_PASSWORD=postgres
 
@@ -151,29 +151,29 @@ OCTANE_SERVER=frankenphp
 ## Services
 
 ### App Service
-- **Container**: `ai-chess-app`
+- **Container**: `hex-architecture-laravel-app`
 - **Ports**: 80 (HTTP), 443 (HTTPS), 5173 (Vite)
 - **Command**: `php artisan octane:frankenphp --watch`
 - **Features**: Auto-reload on code changes, XDebug enabled
 
 ### Worker Service
-- **Container**: `ai-chess-worker`
+- **Container**: `hex-architecture-laravel-worker`
 - **Command**: `php artisan queue:work`
 - **Features**: Processes queued jobs from Redis
 
 ### PostgreSQL Service
-- **Container**: `ai-chess-postgres`
+- **Container**: `hex-architecture-laravel-postgres`
 - **Port**: 5432
-- **Database**: `ai_chess`
+- **Database**: `hex_architecture_laravel`
 - **Data**: Persisted in `postgres_data` volume
 
 ### Redis Service
-- **Container**: `ai-chess-redis`
+- **Container**: `hex-architecture-laravel-redis`
 - **Port**: 6379
 - **Data**: Persisted in `redis_data` volume
 
 ### Vite Service
-- **Container**: `ai-chess-vite`
+- **Container**: `hex-architecture-laravel-vite`
 - **Port**: 5173
 - **Features**: Hot module replacement for frontend
 
@@ -198,7 +198,7 @@ XDebug is pre-configured in the development container for debugging.
 1. In **Settings/Preferences** → **PHP** → **Servers**
 2. Click **+** to add a new server
 3. Configure:
-   - **Name**: `ai-chess` (must match `PHP_IDE_CONFIG` env var)
+   - **Name**: `hex-architecture-laravel` (must match `PHP_IDE_CONFIG` env var)
    - **Host**: `localhost`
    - **Port**: `80`
    - **Debugger**: `Xdebug`
@@ -230,7 +230,7 @@ The following XDebug settings are configured in `docker-compose.yml`:
 ```yaml
 XDEBUG_MODE=debug
 XDEBUG_CONFIG=client_host=host.docker.internal client_port=9003 start_with_request=yes
-PHP_IDE_CONFIG=serverName=ai-chess
+PHP_IDE_CONFIG=serverName=hex-architecture-laravel
 ```
 
 ### Troubleshooting XDebug
@@ -239,7 +239,7 @@ PHP_IDE_CONFIG=serverName=ai-chess
 
 1. Ensure you're listening for debug connections (phone icon in toolbar)
 2. Check that port 9003 is not blocked by firewall
-3. Verify the server name matches: `ai-chess`
+3. Verify the server name matches: `hex-architecture-laravel`
 4. View XDebug logs in container:
    ```bash
    make shell

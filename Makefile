@@ -26,20 +26,26 @@ setup: ## Complete development setup (first time)
 	fi
 	@echo "$(YELLOW)Building containers...$(RESET)"
 	docker compose build
+	@echo "$(YELLOW)Installing Composer dependencies...$(RESET)"
+	docker compose run --rm --no-deps app composer install --no-interaction --prefer-dist
+	@echo "$(YELLOW)Installing NPM dependencies...$(RESET)"
+	docker compose run --rm --no-deps app npm install --no-audit
+	@if ! grep -q '^APP_KEY=' .env || [ -z "$$\(grep '^APP_KEY=' .env | cut -d= -f2-\)" ]; then \
+		echo "$(YELLOW)Generating application key...$(RESET)"; \
+		docker compose run --rm --no-deps app php artisan key:generate --force; \
+	fi
+	@if [ ! -f config/octane.php ]; then \
+		echo "$(YELLOW)Installing Laravel Octane...$(RESET)"; \
+		docker compose run --rm --no-deps app php artisan octane:install --server=frankenphp --no-interaction; \
+	fi
+	@echo "$(YELLOW)Building assets...$(RESET)"
+	docker compose run --rm --no-deps app npm run build
 	@echo "$(YELLOW)Starting containers...$(RESET)"
 	docker compose up -d
-	@echo "$(YELLOW)Installing dependencies...$(RESET)"
-	docker compose exec app composer install --no-interaction --prefer-dist
-	docker compose exec app npm install --no-audit
-	@echo "$(YELLOW)Setting up Laravel...$(RESET)"
-	docker compose exec app php artisan key:generate
-	@echo "$(YELLOW)Installing Laravel Octane...$(RESET)"
-	docker compose exec app composer require laravel/octane
-	docker compose exec app php artisan octane:install --server=frankenphp --no-interaction
+	@echo "$(YELLOW)Waiting for database to be ready...$(RESET)"
+	docker compose run --rm app sh -c 'set -e; until PGPASSWORD="$$DB_PASSWORD" pg_isready -h "$$DB_HOST" -p "$$DB_PORT" -U "$$DB_USERNAME" >/dev/null 2>&1; do sleep 1; done'
 	@echo "$(YELLOW)Running migrations...$(RESET)"
-	docker compose exec app php artisan migrate --force
-	@echo "$(YELLOW)Building assets...$(RESET)"
-	docker compose exec app npm run build
+	docker compose run --rm app php artisan migrate --force
 	@echo "$(GREEN)Setup complete! Restarting containers...$(RESET)"
 	docker compose restart app
 	@echo "$(GREEN)✓ Development environment ready!$(RESET)"

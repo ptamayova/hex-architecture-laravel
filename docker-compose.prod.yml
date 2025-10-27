@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: production
-    container_name: ai-chess-app
+    container_name: hex-architecture-laravel-app
     restart: unless-stopped
     working_dir: /app
     ports:
@@ -16,7 +16,7 @@ services:
       - DB_CONNECTION=pgsql
       - DB_HOST=postgres
       - DB_PORT=5432
-      - DB_DATABASE=ai_chess
+      - DB_DATABASE=hex_architecture_laravel
       - DB_USERNAME=postgres
       - DB_PASSWORD=${DB_PASSWORD}
       - REDIS_HOST=redis
@@ -31,14 +31,14 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - ai-chess
+      - hex-architecture-laravel
 
   worker:
     build:
       context: .
       dockerfile: Dockerfile
       target: production
-    container_name: ai-chess-worker
+    container_name: hex-architecture-laravel-worker
     restart: unless-stopped
     working_dir: /app
     environment:
@@ -47,7 +47,7 @@ services:
       - DB_CONNECTION=pgsql
       - DB_HOST=postgres
       - DB_PORT=5432
-      - DB_DATABASE=ai_chess
+      - DB_DATABASE=hex_architecture_laravel
       - DB_USERNAME=postgres
       - DB_PASSWORD=${DB_PASSWORD}
       - REDIS_HOST=redis
@@ -62,14 +62,14 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - ai-chess
+      - hex-architecture-laravel
 
   postgres:
     image: postgres:17-alpine
-    container_name: ai-chess-postgres
+    container_name: hex-architecture-laravel-postgres
     restart: unless-stopped
     environment:
-      - POSTGRES_DB=ai_chess
+      - POSTGRES_DB=hex_architecture_laravel
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
@@ -80,11 +80,11 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - ai-chess
+      - hex-architecture-laravel
 
   redis:
     image: redis:7-alpine
-    container_name: ai-chess-redis
+    container_name: hex-architecture-laravel-redis
     restart: unless-stopped
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
     volumes:
@@ -95,10 +95,10 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - ai-chess
+      - hex-architecture-laravel
 
 networks:
-  ai-chess:
+  hex-architecture-laravel:
     driver: bridge
 
 volumes:
