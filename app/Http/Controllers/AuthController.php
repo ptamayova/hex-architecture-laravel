@@ -34,10 +34,11 @@ final class AuthController
     public function register(RegisterRequest $request): RedirectResponse
     {
         try {
+            $validated = $request->validated();
             $input = new RegisterUserInput(
-                name: $request->validated()['name'],
-                email: $request->validated()['email'],
-                password: $request->validated()['password'],
+                name: (string) $validated['name'],
+                email: (string) $validated['email'],
+                password: (string) $validated['password'],
             );
 
             $this->registerUserUseCase->execute($input);
@@ -58,9 +59,10 @@ final class AuthController
     public function login(LoginRequest $request): RedirectResponse
     {
         try {
+            $validated = $request->validated();
             $input = new LoginUserInput(
-                email: $request->validated()['email'],
-                password: $request->validated()['password'],
+                email: (string) $validated['email'],
+                password: (string) $validated['password'],
             );
 
             $this->loginUserUseCase->execute($input);
