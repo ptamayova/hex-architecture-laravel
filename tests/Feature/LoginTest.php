@@ -132,7 +132,5 @@ test('login handles InvalidArgumentException from use case', function (): void {
     ]);
 
     $response->assertSessionHasErrors('error');
-    $response->assertSessionHas('errors', function ($errors): bool {
-        return $errors->first('error') === 'Invalid input provided';
-    });
+    $response->assertSessionHas('errors', fn ($errors): bool => $errors->first('error') === 'Invalid input provided');
 });

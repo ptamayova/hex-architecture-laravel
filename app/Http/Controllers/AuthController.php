@@ -18,12 +18,12 @@ use Src\Authentication\Domain\Exceptions\InvalidCredentialsException;
 use Src\Authentication\Domain\Exceptions\UserAlreadyExistsException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-final class AuthController
+final readonly class AuthController
 {
     public function __construct(
-        private readonly RegisterUserUseCase $registerUserUseCase,
-        private readonly LoginUserUseCase $loginUserUseCase,
-        private readonly LogoutUserUseCase $logoutUserUseCase,
+        private RegisterUserUseCase $registerUserUseCase,
+        private LoginUserUseCase $loginUserUseCase,
+        private LogoutUserUseCase $logoutUserUseCase,
     ) {}
 
     public function showRegisterForm(): InertiaResponse
