@@ -34,11 +34,12 @@ final readonly class AuthController
     public function register(RegisterRequest $request): RedirectResponse
     {
         try {
+            /** @var array{name: string, email: string, password: string} $validated */
             $validated = $request->validated();
             $input = new RegisterUserInput(
-                name: (string) $validated['name'],
-                email: (string) $validated['email'],
-                password: (string) $validated['password'],
+                name: $validated['name'],
+                email: $validated['email'],
+                password: $validated['password'],
             );
 
             $this->registerUserUseCase->execute($input);
@@ -59,10 +60,11 @@ final readonly class AuthController
     public function login(LoginRequest $request): RedirectResponse
     {
         try {
+            /** @var array{email: string, password: string} $validated */
             $validated = $request->validated();
             $input = new LoginUserInput(
-                email: (string) $validated['email'],
-                password: (string) $validated['password'],
+                email: $validated['email'],
+                password: $validated['password'],
             );
 
             $this->loginUserUseCase->execute($input);
