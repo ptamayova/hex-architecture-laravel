@@ -109,9 +109,7 @@ test('register handles UserAlreadyExistsException from use case', function (): v
     ]);
 
     $response->assertSessionHasErrors('email');
-    $response->assertSessionHas('errors', function ($errors): bool {
-        return str_contains($errors->first('email'), 'already exists');
-    });
+    $response->assertSessionHas('errors', fn ($errors): bool => str_contains((string) $errors->first('email'), 'already exists'));
 });
 
 test('register handles InvalidArgumentException from use case', function (): void {
@@ -136,7 +134,5 @@ test('register handles InvalidArgumentException from use case', function (): voi
     ]);
 
     $response->assertSessionHasErrors('error');
-    $response->assertSessionHas('errors', function ($errors): bool {
-        return $errors->first('error') === 'Invalid input provided';
-    });
+    $response->assertSessionHas('errors', fn ($errors): bool => $errors->first('error') === 'Invalid input provided');
 });
