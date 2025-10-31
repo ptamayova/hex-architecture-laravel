@@ -3,6 +3,14 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use Src\Authentication\Domain\Ports\AuthenticatorInterface;
+use Src\Authentication\Domain\Ports\PasswordHasherInterface;
+use Src\Authentication\Domain\Ports\UserRepositoryInterface;
+use Src\Authentication\Domain\ValueObjects\Email;
+use Src\Authentication\Domain\ValueObjects\HashedPassword;
+use Src\Authentication\Domain\ValueObjects\UserId;
+
+use function Pest\Laravel\mock;
 
 test('login page can be rendered', function (): void {
     $response = $this->get('/login');
@@ -85,4 +93,46 @@ test('authenticated users can logout', function (): void {
 
     $response->assertRedirect('/');
     $this->assertGuest();
+});
+
+test('login handles InvalidArgumentException from use case', function (): void {
+    $user = User::factory()->create([
+        'email' => 'test@example.com',
+        'password' => bcrypt('password123'),
+    ]);
+
+    $repositoryMock = mock(UserRepositoryInterface::class);
+    $repositoryMock->shouldReceive('findByEmail')
+        ->once()
+        ->andReturn(Src\Authentication\Domain\Entities\User::create(
+            new UserId(1),
+            $user->name,
+            new Email($user->email),
+            new HashedPassword($user->password)
+        ));
+
+    $passwordHasherMock = mock(PasswordHasherInterface::class);
+    $passwordHasherMock->shouldReceive('verify')
+        ->once()
+        ->andReturn(true);
+
+    $authenticatorMock = mock(AuthenticatorInterface::class);
+    $authenticatorMock->shouldReceive('login')
+        ->once()
+        ->with(Mockery::type(UserId::class))
+        ->andThrow(new InvalidArgumentException('Invalid input provided'));
+
+    $this->app->instance(UserRepositoryInterface::class, $repositoryMock);
+    $this->app->instance(PasswordHasherInterface::class, $passwordHasherMock);
+    $this->app->instance(AuthenticatorInterface::class, $authenticatorMock);
+
+    $response = $this->post('/login', [
+        'email' => 'test@example.com',
+        'password' => 'password123',
+    ]);
+
+    $response->assertSessionHasErrors('error');
+    $response->assertSessionHas('errors', function ($errors): bool {
+        return $errors->first('error') === 'Invalid input provided';
+    });
 });
