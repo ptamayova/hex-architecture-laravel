@@ -83,6 +83,11 @@
             "pint --parallel",
             "npm run lint"
         ],
+        "ci:fix": [
+            "rector",
+            "pint --parallel",
+            "npm run lint"
+        ],
         "test:type-coverage": "pest --type-coverage --min=100",
         "test:lint": [
             "pint --parallel --test",
