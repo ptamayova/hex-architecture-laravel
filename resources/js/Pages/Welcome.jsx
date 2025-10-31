@@ -1,9 +1,10 @@
 import { Link, router } from '@inertiajs/react';
+import { route } from 'ziggy-js';
 
 export default function Welcome({ auth }) {
     const handleLogout = (e) => {
         e.preventDefault();
-        router.post('/logout');
+        router.post(route('logout'));
     };
 
     return (
@@ -14,7 +15,7 @@ export default function Welcome({ auth }) {
                         {auth.user ? (
                             <>
                                 <Link
-                                    href="/dashboard"
+                                    href={route('home')}
                                     className="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
                                 >
                                     Dashboard
@@ -29,13 +30,13 @@ export default function Welcome({ auth }) {
                         ) : (
                             <>
                                 <Link
-                                    href="/login"
+                                    href={route('login')}
                                     className="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal"
                                 >
                                     Log in
                                 </Link>
                                 <Link
-                                    href="/register"
+                                    href={route('register')}
                                     className="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
                                 >
                                     Register

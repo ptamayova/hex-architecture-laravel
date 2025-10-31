@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Link } from "@inertiajs/react";
+import { route } from "ziggy-js";
 
 export default function Register() {
   const { data, setData, post, processing, errors } = useForm({
@@ -21,7 +22,7 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post("/register");
+    post(route('register'));
   };
 
   return (
@@ -91,7 +92,7 @@ export default function Register() {
           <p className="text-sm text-muted-foreground">
             Already have an account?{" "}
             <Link
-              href="/login"
+              href={route('login')}
               className="text-primary underline-offset-4 hover:underline"
             >
               Login

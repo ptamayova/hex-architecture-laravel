@@ -7,6 +7,11 @@ createInertiaApp({
         return pages[`./Pages/${name}.jsx`];
     },
     setup({ el, App, props }) {
+        // Initialize Ziggy with routes from Inertia props
+        if (props.initialPage.props?.ziggy) {
+            globalThis.Ziggy = props.initialPage.props.ziggy;
+        }
+        
         createRoot(el).render(<App {...props} />);
     },
 });

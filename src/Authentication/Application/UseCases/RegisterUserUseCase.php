@@ -35,9 +35,7 @@ final readonly class RegisterUserUseCase
         $plainPassword = new PlainPassword($input->password);
         $hashedPassword = $this->passwordHasher->hash($plainPassword);
 
-        // Create user without ID first (ID will be assigned by database)
-        // We'll need to handle this in the infrastructure layer
-        $tempUserId = new UserId(1); // Temporary, will be replaced by actual ID
+        $tempUserId = new UserId(1); // Temporary, will be replaced by actual ID from DB
         $user = User::create(
             $tempUserId,
             $input->name,
@@ -54,7 +52,6 @@ final readonly class RegisterUserUseCase
             throw new RuntimeException('Failed to retrieve saved user');
         }
 
-        // Authenticate the user
         $this->authenticator->login($savedUser->id());
 
         return new UserRegisteredDto(
