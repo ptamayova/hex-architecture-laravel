@@ -34,6 +34,9 @@ WORKDIR /app
 # Development stage
 FROM base AS dev
 
+# Copy PHP development configuration (disables OpCache delay)
+COPY docker/php/dev.ini /usr/local/etc/php/conf.d/dev.ini
+
 # Install XDebug for development
 RUN install-php-extensions xdebug
 

@@ -190,6 +190,7 @@ return [
         'public/**/*.php',
         'resources/**/*.php',
         'routes',
+        'src',
         'composer.lock',
         '.env',
     ],

@@ -254,13 +254,61 @@ php -v
 # Should show: "with Xdebug v3.x.x"
 ```
 
-## Hot Reload (Frontend)
+## Hot Reload & Auto-Reload
+
+### Frontend Hot Reload (Vite)
 
 Vite runs in a separate container and provides hot module replacement:
 
 1. Frontend changes are automatically detected
 2. Browser updates without full page refresh
 3. Access Vite dev server at http://localhost:5173
+
+### Backend Auto-Reload (Octane)
+
+Octane automatically watches for PHP code changes and reloads:
+
+**Watched directories:**
+- `app/` - Application code
+- `src/` - **Business logic (Hexagonal Architecture)**
+- `config/` - Configuration files
+- `routes/` - Route files
+- `database/` - Migrations, factories, seeders
+- `resources/**/*.php` - PHP resources
+- `composer.lock` - Dependency changes
+- `.env` - Environment variables
+
+When files in these directories change, Octane automatically reloads the server. No manual restart needed!
+
+### OpCache Configuration
+
+OpCache is configured for instant file validation in development:
+
+- `opcache.revalidate_freq=0` - Check for changes on every request
+- `opcache.validate_timestamps=1` - Enable file timestamp checking
+
+This ensures you see code changes immediately without caching delays.
+
+### Queue Worker Auto-Reload
+
+⚠️ **Important:** Queue workers do **NOT** auto-reload when code changes.
+
+This is by design in Laravel. When you make code changes that affect queued jobs, you must manually restart the worker:
+
+```bash
+# Restart the worker container
+make restart-worker
+
+# Or restart queue workers without restarting container
+make queue-restart
+```
+
+**Why?** Queue workers load code into memory once and keep running. To see code changes, the worker process must be restarted.
+
+**Best practice for development:**
+- For quick iterations, use `make restart-worker` after changing job code
+- The worker container restarts in seconds
+- Consider using `php artisan queue:work --max-jobs=1` for development (processes one job then restarts)
 
 ## HTTPS Support
 
