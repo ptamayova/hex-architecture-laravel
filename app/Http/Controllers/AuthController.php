@@ -44,7 +44,7 @@ final readonly class AuthController
 
             $this->registerUserUseCase->execute($input);
 
-            return redirect()->route('home');
+            return to_route('home');
         } catch (UserAlreadyExistsException $e) {
             return back()->withErrors(['email' => $e->getMessage()]);
         } catch (InvalidArgumentException $e) {
@@ -69,7 +69,7 @@ final readonly class AuthController
 
             $this->loginUserUseCase->execute($input);
 
-            return redirect()->route('home');
+            return to_route('home');
         } catch (InvalidCredentialsException $e) {
             return back()->withErrors(['email' => $e->getMessage()]);
         } catch (InvalidArgumentException $e) {
@@ -81,6 +81,6 @@ final readonly class AuthController
     {
         $this->logoutUserUseCase->execute();
 
-        return redirect()->route('home');
+        return to_route('home');
     }
 }
