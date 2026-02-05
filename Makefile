@@ -20,8 +20,54 @@ help: ## Show this help message
 ## Setup & Installation
 setup: ## Complete development setup (first time)
 	@echo "$(BLUE)Starting development setup...$(RESET)"
-	@if [ ! -f .env ]; then \
-		echo "$(YELLOW)Creating .env file...$(RESET)"; \
+	@# Prompt for project configuration if .env doesn't exist or is missing PROJECT_NAME
+	@if [ ! -f .env ] || ! grep -q "^PROJECT_NAME=" .env 2>/dev/null; then \
+		echo ""; \
+		echo "$(BLUE)Project Configuration$(RESET)"; \
+		echo "$(YELLOW)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(RESET)"; \
+		echo ""; \
+		read -p "$$(echo '$(BLUE)')Enter project name$$(echo '$(RESET)') (lowercase, hyphens allowed, e.g. my-app): " PROJECT_NAME; \
+		if [ -z "$$PROJECT_NAME" ]; then \
+			echo "$(RED)Error: Project name cannot be empty$(RESET)"; \
+			exit 1; \
+		fi; \
+		if ! echo "$$PROJECT_NAME" | grep -qE '^[a-z0-9-]+$$'; then \
+			echo "$(RED)Error: Project name must contain only lowercase letters, numbers, and hyphens$(RESET)"; \
+			exit 1; \
+		fi; \
+		SUGGESTED_DB_NAME=$$(echo "$$PROJECT_NAME" | tr '-' '_'); \
+		echo ""; \
+		read -p "$$(echo '$(BLUE)')Enter database name$$(echo '$(RESET)') [$$SUGGESTED_DB_NAME]: " DB_NAME; \
+		DB_NAME=$${DB_NAME:-$$SUGGESTED_DB_NAME}; \
+		if ! echo "$$DB_NAME" | grep -qE '^[a-z0-9_]+$$'; then \
+			echo "$(RED)Error: Database name must contain only lowercase letters, numbers, and underscores$(RESET)"; \
+			exit 1; \
+		fi; \
+		echo ""; \
+		echo "$(GREEN)✓ Configuration:$(RESET)"; \
+		echo "  PROJECT_NAME: $$PROJECT_NAME"; \
+		echo "  DB_NAME: $$DB_NAME"; \
+		echo ""; \
+		if [ ! -f .env ]; then \
+			echo "$(YELLOW)Creating .env file from template...$(RESET)"; \
+			cp .env.example .env; \
+		fi; \
+		echo "$(YELLOW)Updating .env file...$(RESET)"; \
+		if grep -q "^PROJECT_NAME=" .env 2>/dev/null; then \
+			sed -i.bak "s/^PROJECT_NAME=.*/PROJECT_NAME=$$PROJECT_NAME/" .env && rm -f .env.bak; \
+		else \
+			sed -i.bak "1 s/^/PROJECT_NAME=$$PROJECT_NAME"$$'\n/' .env && rm -f .env.bak; \
+		fi; \
+		if grep -q "^DB_NAME=" .env 2>/dev/null; then \
+			sed -i.bak "s/^DB_NAME=.*/DB_NAME=$$DB_NAME/" .env && rm -f .env.bak; \
+		else \
+			sed -i.bak "2 s/^/DB_NAME=$$DB_NAME"$$'\n/' .env && rm -f .env.bak; \
+		fi; \
+		sed -i.bak "s/^DB_DATABASE=.*/DB_DATABASE=$$DB_NAME/" .env && rm -f .env.bak; \
+		echo "$(GREEN)✓ Configuration saved to .env$(RESET)"; \
+		echo ""; \
+	elif [ ! -f .env ]; then \
+		echo "$(YELLOW)Creating .env file from template...$(RESET)"; \
 		cp .env.example .env; \
 	fi
 	@echo "$(YELLOW)Building containers...$(RESET)"
@@ -30,10 +76,6 @@ setup: ## Complete development setup (first time)
 	docker compose run --rm --no-deps app composer install --no-interaction --prefer-dist
 	@echo "$(YELLOW)Installing NPM dependencies...$(RESET)"
 	docker compose run --rm --no-deps app npm install --no-audit
-	@if ! grep -q '^APP_KEY=' .env || [ -z "$$\(grep '^APP_KEY=' .env | cut -d= -f2-\)" ]; then \
-		echo "$(YELLOW)Generating application key...$(RESET)"; \
-		docker compose run --rm --no-deps app php artisan key:generate --force; \
-	fi
 	@if [ ! -f config/octane.php ]; then \
 		echo "$(YELLOW)Installing Laravel Octane...$(RESET)"; \
 		docker compose run --rm --no-deps app php artisan octane:install --server=frankenphp --no-interaction; \
@@ -42,6 +84,8 @@ setup: ## Complete development setup (first time)
 	docker compose run --rm --no-deps app npm run build
 	@echo "$(YELLOW)Starting containers...$(RESET)"
 	docker compose up -d
+	@echo "$(YELLOW)Generating application key...$(RESET)"
+	docker compose exec app php artisan key:generate --force
 	@echo "$(YELLOW)Waiting for database to be ready...$(RESET)"
 	docker compose run --rm app sh -c 'set -e; until PGPASSWORD="$$DB_PASSWORD" pg_isready -h "$$DB_HOST" -p "$$DB_PORT" -U "$$DB_USERNAME" >/dev/null 2>&1; do sleep 1; done'
 	@echo "$(YELLOW)Running migrations...$(RESET)"
@@ -141,7 +185,15 @@ shell-root: ## Access app container as root
 	docker compose exec -u root app bash
 
 db: ## Access PostgreSQL database
-	docker compose exec postgres psql -U postgres -d ai_chess
+	@DB_NAME=$$(grep '^DB_NAME=' .env 2>/dev/null | cut -d '=' -f2); \
+	if [ -z "$$DB_NAME" ]; then \
+		DB_NAME=$$(grep '^DB_DATABASE=' .env 2>/dev/null | cut -d '=' -f2); \
+	fi; \
+	if [ -z "$$DB_NAME" ]; then \
+		echo "$(RED)Error: DB_NAME not found in .env file$(RESET)"; \
+		exit 1; \
+	fi; \
+	docker compose exec postgres psql -U postgres -d $$DB_NAME
 
 redis-cli: ## Access Redis CLI
 	docker compose exec redis redis-cli
