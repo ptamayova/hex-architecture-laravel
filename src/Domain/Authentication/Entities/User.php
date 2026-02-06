@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Src\Authentication\Domain\Entities;
+namespace Src\Domain\Authentication\Entities;
 
-use Src\Authentication\Domain\ValueObjects\Email;
-use Src\Authentication\Domain\ValueObjects\HashedPassword;
-use Src\Authentication\Domain\ValueObjects\UserId;
+use Src\Domain\Authentication\ValueObjects\Email;
+use Src\Domain\Authentication\ValueObjects\HashedPassword;
+use Src\Domain\Authentication\ValueObjects\UserId;
 
 final readonly class User
 {

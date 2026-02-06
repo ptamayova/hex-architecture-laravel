@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Src\Authentication\Infrastructure;
 
 use Illuminate\Support\Facades\Hash;
-use Src\Authentication\Domain\Ports\PasswordHasherInterface;
-use Src\Authentication\Domain\ValueObjects\HashedPassword;
-use Src\Authentication\Domain\ValueObjects\PlainPassword;
+use Src\Domain\Authentication\Ports\PasswordHasherInterface;
+use Src\Domain\Authentication\ValueObjects\HashedPassword;
+use Src\Domain\Authentication\ValueObjects\PlainPassword;
 
 final class LaravelPasswordHasher implements PasswordHasherInterface
 {

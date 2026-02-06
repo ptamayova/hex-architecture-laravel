@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Authentication\Application\DTOs;
+namespace Src\Application\Authentication\DTOs;
 
 final readonly class RegisterUserInput
 {

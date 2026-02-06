@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Authentication\Domain\Exceptions;
+namespace Src\Domain\Authentication\Exceptions;
 
 final class InvalidCredentialsException extends DomainException
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Src\Authentication\Domain\Ports;
+namespace Src\Domain\Authentication\Ports;
 
-use Src\Authentication\Domain\ValueObjects\UserId;
+use Src\Domain\Authentication\ValueObjects\UserId;
 
 interface AuthenticatorInterface
 {

@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use App\Models\User;
-use Src\Authentication\Domain\Ports\AuthenticatorInterface;
-use Src\Authentication\Domain\Ports\PasswordHasherInterface;
-use Src\Authentication\Domain\Ports\UserRepositoryInterface;
-use Src\Authentication\Domain\ValueObjects\Email;
-use Src\Authentication\Domain\ValueObjects\HashedPassword;
-use Src\Authentication\Domain\ValueObjects\UserId;
+use Src\Domain\Authentication\Ports\AuthenticatorInterface;
+use Src\Domain\Authentication\Ports\PasswordHasherInterface;
+use Src\Domain\Authentication\Ports\UserRepositoryInterface;
+use Src\Domain\Authentication\ValueObjects\Email;
+use Src\Domain\Authentication\ValueObjects\HashedPassword;
+use Src\Domain\Authentication\ValueObjects\UserId;
 
 use function Pest\Laravel\mock;
 
@@ -104,7 +104,7 @@ test('login handles InvalidArgumentException from use case', function (): void {
     $repositoryMock = mock(UserRepositoryInterface::class);
     $repositoryMock->shouldReceive('findByEmail')
         ->once()
-        ->andReturn(Src\Authentication\Domain\Entities\User::create(
+        ->andReturn(Src\Domain\Authentication\Entities\User::create(
             new UserId(1),
             $user->name,
             new Email($user->email),

@@ -8,10 +8,10 @@ arch()->preset()->php();
 // Exclude: DomainException (abstract base class), Interfaces (can't be final)
 arch('concrete classes should be final')
     ->expect([
-        'Src\\Authentication\\Application',
-        'Src\\Authentication\\Domain\\Entities',
-        'Src\\Authentication\\Domain\\ValueObjects',
-        'Src\\Authentication\\Infrastructure',
+        'Src\\Application\\Authentication',
+        'Src\\Domain\\Authentication\\Entities',
+        'Src\\Domain\\Authentication\\ValueObjects',
+        'Src\\Infrastructure\\Authentication',
     ])
     ->toBeFinal();
 

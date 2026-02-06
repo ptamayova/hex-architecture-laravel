@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Src\Authentication\Infrastructure;
 
 use Illuminate\Support\Facades\Auth;
-use Src\Authentication\Domain\Ports\AuthenticatorInterface;
-use Src\Authentication\Domain\ValueObjects\UserId;
+use Src\Domain\Authentication\Ports\AuthenticatorInterface;
+use Src\Domain\Authentication\ValueObjects\UserId;
 
 final class LaravelAuthenticator implements AuthenticatorInterface
 {

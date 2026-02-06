@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Src\Authentication\Domain\Exceptions;
+namespace Src\Domain\Authentication\Exceptions;
 
-use Src\Authentication\Domain\ValueObjects\Email;
+use Src\Domain\Authentication\ValueObjects\Email;
 
 final class UserAlreadyExistsException extends DomainException
 {

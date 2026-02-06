@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Src\Authentication\Application\UseCases;
+namespace Src\Application\Authentication\UseCases;
 
-use Src\Authentication\Domain\Ports\AuthenticatorInterface;
+use Src\Domain\Authentication\Ports\AuthenticatorInterface;
 
 final readonly class LogoutUserUseCase
 {

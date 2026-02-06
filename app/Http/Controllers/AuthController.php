@@ -9,13 +9,13 @@ use App\Http\Requests\RegisterRequest;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 use InvalidArgumentException;
-use Src\Authentication\Application\DTOs\LoginUserInput;
-use Src\Authentication\Application\DTOs\RegisterUserInput;
-use Src\Authentication\Application\UseCases\LoginUserUseCase;
-use Src\Authentication\Application\UseCases\LogoutUserUseCase;
-use Src\Authentication\Application\UseCases\RegisterUserUseCase;
-use Src\Authentication\Domain\Exceptions\InvalidCredentialsException;
-use Src\Authentication\Domain\Exceptions\UserAlreadyExistsException;
+use Src\Application\Authentication\DTOs\LoginUserInput;
+use Src\Application\Authentication\DTOs\RegisterUserInput;
+use Src\Application\Authentication\UseCases\LoginUserUseCase;
+use Src\Application\Authentication\UseCases\LogoutUserUseCase;
+use Src\Application\Authentication\UseCases\RegisterUserUseCase;
+use Src\Domain\Authentication\Exceptions\InvalidCredentialsException;
+use Src\Domain\Authentication\Exceptions\UserAlreadyExistsException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final readonly class AuthController

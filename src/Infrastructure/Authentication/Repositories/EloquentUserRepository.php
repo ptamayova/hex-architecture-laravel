@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Src\Authentication\Infrastructure;
 
 use App\Models\User as EloquentUser;
-use Src\Authentication\Domain\Entities\User;
-use Src\Authentication\Domain\Ports\UserRepositoryInterface;
-use Src\Authentication\Domain\ValueObjects\Email;
-use Src\Authentication\Domain\ValueObjects\HashedPassword;
-use Src\Authentication\Domain\ValueObjects\UserId;
+use Src\Domain\Authentication\Entities\User;
+use Src\Domain\Authentication\Ports\UserRepositoryInterface;
+use Src\Domain\Authentication\ValueObjects\Email;
+use Src\Domain\Authentication\ValueObjects\HashedPassword;
+use Src\Domain\Authentication\ValueObjects\UserId;
 
 final class EloquentUserRepository implements UserRepositoryInterface
 {

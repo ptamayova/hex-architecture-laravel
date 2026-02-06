@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Src\Authentication\Application\UseCases;
+namespace Src\Application\Authentication\UseCases;
 
-use Src\Authentication\Application\DTOs\LoginUserInput;
-use Src\Authentication\Application\DTOs\UserAuthenticatedDto;
-use Src\Authentication\Domain\Exceptions\InvalidCredentialsException;
-use Src\Authentication\Domain\Ports\AuthenticatorInterface;
-use Src\Authentication\Domain\Ports\PasswordHasherInterface;
-use Src\Authentication\Domain\Ports\UserRepositoryInterface;
-use Src\Authentication\Domain\ValueObjects\Email;
-use Src\Authentication\Domain\ValueObjects\PlainPassword;
+use Src\Application\Authentication\DTOs\LoginUserInput;
+use Src\Application\Authentication\DTOs\UserAuthenticatedDto;
+use Src\Domain\Authentication\Exceptions\InvalidCredentialsException;
+use Src\Domain\Authentication\Ports\AuthenticatorInterface;
+use Src\Domain\Authentication\Ports\PasswordHasherInterface;
+use Src\Domain\Authentication\Ports\UserRepositoryInterface;
+use Src\Domain\Authentication\ValueObjects\Email;
+use Src\Domain\Authentication\ValueObjects\PlainPassword;
 
 final readonly class LoginUserUseCase
 {

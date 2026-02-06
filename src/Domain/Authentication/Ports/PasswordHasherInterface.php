@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Src\Authentication\Domain\Ports;
+namespace Src\Domain\Authentication\Ports;
 
-use Src\Authentication\Domain\ValueObjects\HashedPassword;
-use Src\Authentication\Domain\ValueObjects\PlainPassword;
+use Src\Domain\Authentication\ValueObjects\HashedPassword;
+use Src\Domain\Authentication\ValueObjects\PlainPassword;
 
 interface PasswordHasherInterface
 {

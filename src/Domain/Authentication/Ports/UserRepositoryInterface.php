@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Src\Authentication\Domain\Ports;
+namespace Src\Domain\Authentication\Ports;
 
-use Src\Authentication\Domain\Entities\User;
-use Src\Authentication\Domain\ValueObjects\Email;
-use Src\Authentication\Domain\ValueObjects\UserId;
+use Src\Domain\Authentication\Entities\User;
+use Src\Domain\Authentication\ValueObjects\Email;
+use Src\Domain\Authentication\ValueObjects\UserId;
 
 interface UserRepositoryInterface
 {

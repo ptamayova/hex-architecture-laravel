@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Authentication\Domain\ValueObjects;
+namespace Src\Domain\Authentication\ValueObjects;
 
 use InvalidArgumentException;
 

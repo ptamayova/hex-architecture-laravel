@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Src\Authentication\Application\UseCases\LoginUserUseCase;
-use Src\Authentication\Application\UseCases\LogoutUserUseCase;
-use Src\Authentication\Application\UseCases\RegisterUserUseCase;
-use Src\Authentication\Domain\Ports\AuthenticatorInterface;
-use Src\Authentication\Domain\Ports\PasswordHasherInterface;
-use Src\Authentication\Domain\Ports\UserRepositoryInterface;
-use Src\Authentication\Infrastructure\EloquentUserRepository;
-use Src\Authentication\Infrastructure\LaravelAuthenticator;
-use Src\Authentication\Infrastructure\LaravelPasswordHasher;
+use Src\Application\Authentication\UseCases\LoginUserUseCase;
+use Src\Application\Authentication\UseCases\LogoutUserUseCase;
+use Src\Application\Authentication\UseCases\RegisterUserUseCase;
+use Src\Domain\Authentication\Ports\AuthenticatorInterface;
+use Src\Domain\Authentication\Ports\PasswordHasherInterface;
+use Src\Domain\Authentication\Ports\UserRepositoryInterface;
+use Src\Infrastructure\Authentication\EloquentUserRepository;
+use Src\Infrastructure\Authentication\LaravelAuthenticator;
+use Src\Infrastructure\Authentication\LaravelPasswordHasher;
 
 final class AuthenticationServiceProvider extends ServiceProvider
 {

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Src\Authentication\Application\UseCases;
+namespace Src\Application\Authentication\UseCases;
 
 use RuntimeException;
-use Src\Authentication\Application\DTOs\RegisterUserInput;
-use Src\Authentication\Application\DTOs\UserRegisteredDto;
-use Src\Authentication\Domain\Entities\User;
-use Src\Authentication\Domain\Exceptions\UserAlreadyExistsException;
-use Src\Authentication\Domain\Ports\AuthenticatorInterface;
-use Src\Authentication\Domain\Ports\PasswordHasherInterface;
-use Src\Authentication\Domain\Ports\UserRepositoryInterface;
-use Src\Authentication\Domain\ValueObjects\Email;
-use Src\Authentication\Domain\ValueObjects\PlainPassword;
-use Src\Authentication\Domain\ValueObjects\UserId;
+use Src\Application\Authentication\DTOs\RegisterUserInput;
+use Src\Application\Authentication\DTOs\UserRegisteredDto;
+use Src\Domain\Authentication\Entities\User;
+use Src\Domain\Authentication\Exceptions\UserAlreadyExistsException;
+use Src\Domain\Authentication\Ports\AuthenticatorInterface;
+use Src\Domain\Authentication\Ports\PasswordHasherInterface;
+use Src\Domain\Authentication\Ports\UserRepositoryInterface;
+use Src\Domain\Authentication\ValueObjects\Email;
+use Src\Domain\Authentication\ValueObjects\PlainPassword;
+use Src\Domain\Authentication\ValueObjects\UserId;
 
 final readonly class RegisterUserUseCase
 {

@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use App\Models\User;
-use Src\Authentication\Domain\Ports\PasswordHasherInterface;
-use Src\Authentication\Domain\Ports\UserRepositoryInterface;
-use Src\Authentication\Domain\ValueObjects\PlainPassword;
+use Src\Domain\Authentication\Ports\PasswordHasherInterface;
+use Src\Domain\Authentication\Ports\UserRepositoryInterface;
+use Src\Domain\Authentication\ValueObjects\PlainPassword;
 
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\mock;
