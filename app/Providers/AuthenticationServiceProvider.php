@@ -11,9 +11,9 @@ use Src\Application\Authentication\UseCases\RegisterUserUseCase;
 use Src\Domain\Authentication\Ports\AuthenticatorInterface;
 use Src\Domain\Authentication\Ports\PasswordHasherInterface;
 use Src\Domain\Authentication\Ports\UserRepositoryInterface;
-use Src\Infrastructure\Authentication\Repositories\EloquentUserRepository;
 use Src\Infrastructure\Authentication\LaravelAuthenticator;
 use Src\Infrastructure\Authentication\LaravelPasswordHasher;
+use Src\Infrastructure\Authentication\Repositories\EloquentUserRepository;
 
 final class AuthenticationServiceProvider extends ServiceProvider
 {
