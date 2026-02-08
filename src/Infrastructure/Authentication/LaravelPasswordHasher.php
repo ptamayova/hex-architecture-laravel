@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Authentication\Infrastructure;
+namespace Src\Infrastructure\Authentication;
 
 use Illuminate\Support\Facades\Hash;
 use Src\Domain\Authentication\Ports\PasswordHasherInterface;

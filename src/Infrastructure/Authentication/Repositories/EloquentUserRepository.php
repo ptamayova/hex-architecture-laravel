@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Authentication\Infrastructure;
+namespace Src\Infrastructure\Authentication\Repositories;
 
 use App\Models\User as EloquentUser;
 use Src\Domain\Authentication\Entities\User;
