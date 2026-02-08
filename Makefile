@@ -26,13 +26,17 @@ setup: ## Complete development setup (first time)
 		echo "$(BLUE)Project Configuration$(RESET)"; \
 		echo "$(YELLOW)━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━$(RESET)"; \
 		echo ""; \
-		read -p "$$(echo '$(BLUE)')Enter project name$$(echo '$(RESET)') (lowercase, hyphens allowed, e.g. my-app): " PROJECT_NAME; \
+		read -p "$$(echo '$(BLUE)')Enter project name$$(echo '$(RESET)') (kebab-case, e.g. my-app): " PROJECT_NAME; \
 		if [ -z "$$PROJECT_NAME" ]; then \
 			echo "$(RED)Error: Project name cannot be empty$(RESET)"; \
 			exit 1; \
 		fi; \
-		if ! echo "$$PROJECT_NAME" | grep -qE '^[a-z0-9-]+$$'; then \
-			echo "$(RED)Error: Project name must contain only lowercase letters, numbers, and hyphens$(RESET)"; \
+		if ! echo "$$PROJECT_NAME" | grep -qE '^[a-z][a-z0-9]*(-[a-z0-9]+)*$$'; then \
+			echo "$(RED)Error: Project name must be in kebab-case format:$(RESET)"; \
+			echo "  - Start with a lowercase letter"; \
+			echo "  - Use only lowercase letters, numbers, and hyphens"; \
+			echo "  - Hyphens must separate words (no leading/trailing/consecutive hyphens)"; \
+			echo "  - Examples: my-app, user-service, api-v2"; \
 			exit 1; \
 		fi; \
 		SUGGESTED_DB_NAME=$$(echo "$$PROJECT_NAME" | tr '-' '_'); \
