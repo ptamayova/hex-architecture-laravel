@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Src\Domain\Authentication\Ports\UserRepositoryInterface;
+use Src\Infrastructure\Authentication\Repositories\EloquentUserRepository;
+
 /*
 |--------------------------------------------------------------------------
 | Hexagonal Architecture Tests
@@ -217,8 +220,8 @@ arch('ports should only contain interfaces')
 // Each repository in Infrastructure must implement a corresponding Domain interface
 // Specific check for EloquentUserRepository
 arch('EloquentUserRepository implements UserRepositoryInterface')
-    ->expect('Src\Infrastructure\Authentication\Repositories\EloquentUserRepository')
-    ->toImplement('Src\Domain\Authentication\Ports\UserRepositoryInterface');
+    ->expect(EloquentUserRepository::class)
+    ->toImplement(UserRepositoryInterface::class);
 
 // ============================================================================
 // 12. Controller Delegation
