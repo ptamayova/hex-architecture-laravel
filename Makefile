@@ -62,6 +62,11 @@ setup: ## Complete development setup (first time)
 		else \
 			sed -i.bak "1 s/^/PROJECT_NAME=$$PROJECT_NAME"$$'\n/' .env && rm -f .env.bak; \
 		fi; \
+		if grep -q "^COMPOSE_PROJECT_NAME=" .env 2>/dev/null; then \
+			sed -i.bak "s/^COMPOSE_PROJECT_NAME=.*/COMPOSE_PROJECT_NAME=$$PROJECT_NAME/" .env && rm -f .env.bak; \
+		else \
+			sed -i.bak "2 s/^/COMPOSE_PROJECT_NAME=$$PROJECT_NAME"$$'\n/' .env && rm -f .env.bak; \
+		fi; \
 		if grep -q "^DB_NAME=" .env 2>/dev/null; then \
 			sed -i.bak "s/^DB_NAME=.*/DB_NAME=$$DB_NAME/" .env && rm -f .env.bak; \
 		else \

@@ -42,7 +42,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - ${PROJECT_NAME:-hex-architecture-laravel}
+      - app-network
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -80,7 +80,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - ${PROJECT_NAME:-hex-architecture-laravel}
+      - app-network
 
   postgres:
     image: postgres:17-alpine
@@ -100,7 +100,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - ${PROJECT_NAME:-hex-architecture-laravel}
+      - app-network
 
   redis:
     image: redis:7-alpine
@@ -117,7 +117,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - ${PROJECT_NAME:-hex-architecture-laravel}
+      - app-network
 
   vite:
     image: node:20-alpine
@@ -130,10 +130,10 @@ services:
       - "5173:5173"
     command: npm run dev -- --host 0.0.0.0
     networks:
-      - ${PROJECT_NAME:-hex-architecture-laravel}
+      - app-network
 
 networks:
-  ${PROJECT_NAME:-hex-architecture-laravel}:
+  app-network:
     driver: bridge
 
 volumes:
